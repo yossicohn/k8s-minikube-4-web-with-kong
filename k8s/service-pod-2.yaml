@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi-test-service-2
+  namespace: multi-test
+  labels:
+    app: multi-web-2
+spec:
+  selector:
+    app: multi-web-2
+  ports:
+    - protocol: TCP
+      port: 5035
+      targetPort: 5005
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-web-deployment-2
+  namespace: multi-test
+  labels:
+    app: multi-web-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-web-2
+  template:
+    metadata:
+      labels:
+        app: multi-web-2
+    spec:
+      containers:
+      - name: nginx-web-2
+        image: nginx-web-2:v1.0.0
+        ports:
+        - containerPort: 5008
+        imagePullPolicy: Never
+      - name: nginx-proxy
+        image: nginx-proxy:v1.0.0
+        ports:
+        - containerPort: 5005
+        imagePullPolicy: Never

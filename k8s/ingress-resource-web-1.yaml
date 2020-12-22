@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: multi-test-web-1
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/strip-path: "true"
+spec:
+  rules:
+  - host: myapp.example1.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: multi-test-service-1
+          servicePort: 5035
+
